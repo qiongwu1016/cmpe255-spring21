@@ -155,5 +155,5 @@ print('Multi linear regression (feature: %s) r2 score = ' %features, r2_multi)
 r = r2_multi
 n = len(X_test)
 k = 3
-r_adj = 1 - ((1 - pow(r, 2)) * (n - 1) / (n - k - 1))
-print('Multi linear regression (feature: %s) adjusted r2 score = ' %features, r_adj )
+r_adj = 1 - (1 - r)* (n - 1) / (n - k - 1)
+print('Multi linear regression (feature: %s) adjusted r2 score = ' %features, r_adj)

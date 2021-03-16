@@ -1,5 +1,6 @@
 import numpy as np
 import os
+import pandas as pd
 
 np.random.seed(42)
 
@@ -22,16 +23,24 @@ def save_fig(fig_id, tight_layout=True):
     plt.savefig(path, format='png', dpi=300)
     
 
-def random_digit(X, ind):
-
+def random_digit(X, y):
+    from random import seed
+    import random
+    from datetime import datetime
+    random.seed(datetime.now())
+    print('Test out a prediction from a random input ...')
+    ind = random.randint(0, 70000)
+    print('test random input data index is %d'%ind)
     some_digit = X[ind]
+    pred = sgd.predict(some_digit.reshape(1, -1))
+    print('single digit prediction: ', pred, ', actual digit: ', y[ind])
+    
     some_digit_image = some_digit.reshape(28, 28)
     plt.imshow(some_digit_image, cmap = mpl.cm.binary,
             interpolation="nearest")
     plt.axis("off")
-
     save_fig("%d"%ind)
-    plt.show()
+    plt.show(block = False)
 
    
 def load_and_sort():
@@ -90,29 +99,23 @@ if __name__ == "__main__":
     from sklearn.linear_model import SGDClassifier
     print('Loading data from sklearn.dataset ...')
     X, y = load_and_sort()
-    print('Train SGDClassifier moedel with training dataset ...')
+    print('Train SGDClassifier model with training dataset ...')
     sgd, prediction = train_predict(5, X, y)
     print('Model training completed')
-    
+
+
+    # print prediction result of a random input some_digit
+    random_digit(X, y)
+
+
+
     #calculate_cross_val_score
-    sgd1 = SGDClassifier(random_state = 42)
-    scores = calculate_cross_val_score(sgd1, X, y)
+    #sgd1 = SGDClassifier(random_state = 42)
+    y_5 = (y == 5)
+    scores = calculate_cross_val_score(sgd, X, y_5)
     print('cross-val scores: ', scores)
 
-    # test out a prediction from the trained SGD model
-    from random import seed
-    from random import randint
-    seed(10)
-    print('Test out a prediction from the trained SGD model ...')
-    ind = randint(0, 70000)
-    pred = sgd.predict(X[ind].reshape(1, -1))
-    print('single digit prediction: ', pred, ', actual digit: ', y[ind])
-    random_digit(X, ind)
-    print('Test out a prediction from the trained SGD model ...')
-    ind = randint(0, 70000)
-    pred = sgd.predict(X[ind].reshape(1, -1))
-    print('single digit prediction: ', pred, ', actual digit: ', y[ind])
-    random_digit(X, ind)
+    plt.show()
 
 
 

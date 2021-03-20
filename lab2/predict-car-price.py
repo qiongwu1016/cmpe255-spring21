@@ -158,7 +158,7 @@ plt.legend()
 plt.ylabel('Frequency')
 plt.xlabel('Log(price + 1)')
 plt.title('Predictions vs actual distribution')
-plt.show(block = True)
+plt.savefig('carprice_prediction.png')
 
 
 #print RMSE for train/test/validation dataset from linear_regression model and linear_regression_reg model
@@ -193,4 +193,4 @@ for i in cars:
     suggestion = np.expm1(y_pred)
     print(*carprice.test[output_base].iloc[i].values, np.expm1(carprice.y_test[i]).round(2),  suggestion.round(2), sep = "  |  ")
 
-
+plt.show()

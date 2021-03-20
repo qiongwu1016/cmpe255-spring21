@@ -57,4 +57,5 @@ if __name__ == "__main__":
     print(f"score={score}")
     con_matrix = classifer.confusion_matrix(result)
     print(f"confusion_matrix=${con_matrix}")
+    print('end')
     

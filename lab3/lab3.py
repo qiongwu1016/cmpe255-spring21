@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn import metrics
-from sklearn.preprocessing import MinMaxScaler
+#from sklearn.preprocessing import MinMaxScaler
 
         
 class DiabetesClassifier:
@@ -25,13 +25,15 @@ class DiabetesClassifier:
     def train(self, cols):
         # split X and y into training and testing sets
         X, y = self.define_feature(cols)
-        scaler = MinMaxScaler()
-        scaler.fit(X)
+        #scaler = MinMaxScaler()
+        #scaler.fit(X)
         #X = scaler.transform(X)
         X_train, self.X_test, y_train, self.y_test = train_test_split(X, y, random_state=0)
         # train a logistic regression model on the training set
         logreg = LogisticRegression()
         logreg.fit(X_train, y_train)
+        #print(['pregnant', 'glucose', 'bp', 'skin', 'insulin', 'bmi', 'pedigree', 'age'])
+        #print(logreg.coef_)
         return logreg
     
     def predict(self, cols):
@@ -55,7 +57,15 @@ class DiabetesClassifier:
         return metrics.confusion_matrix(self.y_test, result)
     
 if __name__ == "__main__":
-    cols = [['pregnant', 'insulin', 'bmi', 'age'],['pregnant', 'bmi', 'pedigree', 'skin'], ['insulin','glucose', 'pregnant','pedigree']]
+    #classifer = DiabetesClassifier()
+    #result = classifer.predict( ['pregnant', 'glucose', 'bp', 'skin', 'insulin', 'bmi', 'pedigree', 'age'])
+
+
+
+
+
+
+    cols = [['pregnant', 'insulin', 'bmi', 'age'], ['insulin','glucose', 'pregnant','bmi', 'pedigree','age'], ['pregnant', 'bmi', 'glucose', 'bp']]
 
     #classifer = DiabetesClassifier()
     #result = classifer.predict(cols[2])
@@ -70,11 +80,22 @@ if __name__ == "__main__":
     print('| Experiement | Accuracy | Confusion Matrix | Comment |')
     print('|-------------|----------|------------------|---------|')
     print('| Baseline    | 0.6770833333333334 | [[114  16] [ 46  16]] |  |')
+
     for i in range(3):
         classifer = DiabetesClassifier()
         result = classifer.predict(cols[i])
         score = classifer.calculate_accuracy(result)
         con_matrix = classifer.confusion_matrix(result)
         print(f'| Solution %d| {score} | {con_matrix.tolist()} | {cols[i]} |'%(i+1))
+
+    print('Solution 3 has the highest prediction accuracy on test dataset. ')
+    print('TP = ', con_matrix[0, 0])
+    print('TN = ', con_matrix[1, 1])
+    print('FP = ', con_matrix[0, 1])
+    print('FN = ', con_matrix[1, 0])
+    print('Recall =', con_matrix[0, 0] / (con_matrix[0, 0] + con_matrix[1, 0]))
+    print('Precision = ', con_matrix[0,0] / (con_matrix[0,0] + con_matrix[0, 1]))
+
+
 
 

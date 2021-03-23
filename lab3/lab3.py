@@ -4,7 +4,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn import metrics
 from sklearn.preprocessing import KBinsDiscretizer
-#from sklearn.preprocessing import MinMaxScaler
+from sklearn.feature_selection import chi2
+from sklearn.feature_selection import SelectKBest
+from sklearn.preprocessing import StandardScaler
 
         
 class DiabetesClassifier:
@@ -133,4 +135,14 @@ if __name__ == "__main__":
     print('Recall =', con_matrix[0, 0] / (con_matrix[0, 0] + con_matrix[1, 0]))
     print('Precision = ', con_matrix[0,0] / (con_matrix[0,0] + con_matrix[0, 1]))
 
-
+    #Using chi2 to exam each feature's correlation with the target
+    classifier = DiabetesClassifier()
+    cols =  ['pregnant', 'glucose', 'bp', 'skin', 'insulin', 'bmi', 'pedigree', 'age']
+    #result = classifier.predict(cols)
+    test = SelectKBest(score_func=chi2, k=4)
+    scaler = StandardScaler()
+    X = scaler.fit_transform(classifier.pima[cols])
+    fit = test.fit(abs(X), classifier.pima.label )
+    print(cols)
+    width = 10
+    print('KBest scores of each feature(score function is chi2) \n', fit.scores_)
